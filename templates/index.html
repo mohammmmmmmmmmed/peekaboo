@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peekaboo!</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@600&family=Playfair+Display:wght@700&family=Oswald:wght@500&family=Raleway:wght@600&family=Lobster&family=Courgette&family=Slabo+27px&family=Nunito:wght@600&family=Righteous&family=Poppins:wght@600&display=swap"
+        rel="stylesheet">
+    <style>
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1f2937;
+
+            color: #e5e7eb;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            background: #2d3748;
+
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 90%;
+            width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1 {
+            margin-bottom: 24px;
+            font-size: 2rem;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .select-container {
+            margin-bottom: 24px;
+        }
+
+        select {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            background: #1f2937;
+            color: #e5e7eb;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #60a5fa;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #video-feed {
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #4b5563;
+            margin-top: 20px;
+
+        }
+
+        .background-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg,
+                    rgba(255, 255, 255, 0.1) 25%,
+                    rgba(0, 0, 0, 0.1) 25%,
+                    rgba(0, 0, 0, 0.1) 50%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    rgba(255, 255, 255, 0.1) 75%,
+                    rgba(0, 0, 0, 0.1) 75%,
+                    rgba(0, 0, 0, 0.1) 100%);
+            background-size: 50px 50px;
+            z-index: 1;
+            animation: moveLines 10s linear infinite;
+        }
+
+     
+        footer {
+            margin-top: 24px;
+            font-size: 0.875rem;
+            color: #d1d5db;
+        }
+
+        footer a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .font-blue {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-green {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .font-red {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-yellow {
+            font-family: 'Lobster', cursive;
+        }
+
+        .font-cyan {
+            font-family: 'Courgette', cursive;
+        }
+
+        .font-magenta {
+            font-family: 'Slabo 27px', serif;
+        }
+
+        .font-orange {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .font-purple {
+            font-family: 'Righteous', cursive;
+        }
+
+        .font-brown {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .font-pink {
+            font-family: 'Pacifico', cursive;
+        }
+
+        .font-white {
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        .font-black {
+            font-family: 'Cinzel Decorative', serif;
+        }
+
+        #test p {
+            font-size: 1.5rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .white-text {
+            color: #ffffff;
+
+        }
+
+        .black-text {
+            color: #000000;
+
+        }
+
+        .default-text {
+            color: #e5e7eb;
+
+        }
+
+        .screen-black {
+            color: #e5e7eb;
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="background-lines"></div>
+    <div class="container">
+        <h1 id="header-text"><span id="color-name">Select a Color</span> <span id="screen" style="color: white;"></span>
+        </h1>
+        <div class="select-container">
+            <select id="color-select" onchange="updateColor()">
+                <option value="none" selected>Select a Color</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+                <option value="cyan">Cyan</option>
+                <option value="magenta">Magenta</option>
+                <option value="orange">Orange</option>
+                <option value="purple">Purple</option>
+                <option value="brown">Brown</option>
+                <option value="pink">Pink</option>
+                <option value="white">White</option>
+                <option value="black">Black</option>
+            </select>
+        </div>
+        <button id="action-button" onclick="startCapture()" disabled>Start Capture</button>
+        <button id="stop-button" onclick="stopCapture()" disabled>Stop Capture</button>
+
+        <div id="test"></div>
+    </div>
+
+    <footer>
+        <p>Made with ❤️ by Mohammed Sahal &copy; <span
+                id="current-year"></span></p>
+    </footer>
+
+    <script>
+
+        function updateYear() {
+            const year = new Date().getFullYear();
+            document.getElementById('current-year').textContent = year;
+        }
+
+        updateYear();
+
+        const colorMap = {
+            blue: '#60a5fa',
+            green: '#34d399',
+            red: '#f87171',
+            yellow: '#fbbf24',
+            cyan: '#22d3ee',
+            magenta: '#d946ef',
+            orange: '#fb923c',
+            purple: '#a855f7',
+            brown: '#a45d32',
+            pink: '#ec4899',
+            white: '#ffffff',
+            black: '#000000'
+        };
+
+        const fontMap = {
+            blue: 'font-blue',
+            green: 'font-green',
+            red: 'font-red',
+            yellow: 'font-yellow',
+            cyan: 'font-cyan',
+            magenta: 'font-magenta',
+            orange: 'font-orange',
+            purple: 'font-purple',
+            brown: 'font-brown',
+            pink: 'font-pink',
+            white: 'font-white',
+            black: 'font-black'
+        };
+
+        function updateColor() {
+            const color = document.getElementById('color-select').value;
+            const colorName = document.getElementById('color-name');
+            const header = document.getElementById('header-text');
+            const screen = document.getElementById('screen');
+            const button = document.getElementById('action-button');
+            const stopButton = document.getElementById('stop-button');
+            const container = document.querySelector('.container');
+            const backgroundLines = document.querySelector('.background-lines');
+            const test = document.getElementById('test');
+
+            if (color === 'none') {
+                colorName.textContent = 'Select a Color';
+                screen.textContent = '';
+                colorName.className = '';
+                header.style.color = '#e5e7eb';
+                button.style.backgroundColor = '#60a5fa';
+                stopButton.style.backgroundColor = '#60a5fa';
+                button.disabled = true; 
+                stopButton.disabled = true; 
+                container.style.backgroundColor = '#2d3748';
+                backgroundLines.style.background = 'linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0.1) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1) 100%)';
+                test.innerHTML = ''; 
+                test.className = 'default-text'; 
+
+            } else {
+                colorName.textContent = color.charAt(0).toUpperCase() + color.slice(1);
+                screen.textContent = 'Screen';
+                colorName.className = fontMap[color];
+                header.style.color = colorMap[color];
+                button.style.backgroundColor = colorMap[color];
+                stopButton.style.backgroundColor = colorMap[color];
+                button.disabled = false; 
+                stopButton.disabled = false; 
+
+                if (color === 'white') {
+                    container.style.backgroundColor = '#e5e7eb'; 
+                    header.style.color = '#000000'; 
+                    button.style.backgroundColor = '#000000'; 
+                    button.style.color = '#ffffff'; 
+                    stopButton.style.backgroundColor = '#000000'; 
+                    stopButton.style.color = '#ffffff'; 
+                    test.className = 'black-text'; 
+                } else if (color === 'black') {
+                    container.style.backgroundColor = '#1f2937'; 
+                    header.style.color = '#ffffff'; 
+                    button.style.backgroundColor = '#ffffff'; 
+                    button.style.color = '#000000'; 
+                    stopButton.style.backgroundColor = '#ffffff'; 
+                    stopButton.style.color = '#000000'; 
+                    test.className = 'white-text'; 
+                } else {
+                    container.style.backgroundColor = getLighterShade(colorMap[color]);
+                    test.className = 'default-text'; 
+                }
+
+                backgroundLines.style.background = `linear-gradient(-45deg, rgba(${colorToRGB(colorMap[color])}, 0.1) 25%, rgba(${colorToRGB(colorMap[color])}, 0.1) 25%, rgba(${colorToRGB(colorMap[color])}, 0.1) 50%, rgba(${colorToRGB(colorMap[color])}, 0.1) 50%, rgba(${colorToRGB(colorMap[color])}, 0.1) 75%, rgba(${colorToRGB(colorMap[color])}, 0.1) 75%, rgba(${colorToRGB(colorMap[color])}, 0.1) 100%)`;
+            }
+        }
+
+        function getLighterShade(color) {
+            let r = parseInt(color.slice(1, 3), 16);
+            let g = parseInt(color.slice(3, 5), 16);
+            let b = parseInt(color.slice(5, 7), 16);
+
+            r = Math.min(255, r + 50);
+            g = Math.min(255, g + 50);
+            b = Math.min(255, b + 50);
+
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function colorToRGB(hex) {
+            return `${parseInt(hex.slice(1, 3), 16)},${parseInt(hex.slice(3, 5), 16)},${parseInt(hex.slice(5, 7), 16)}`;
+        }
+
+        function startCapture() {
+            const color = document.getElementById('color-select').value;
+            document.getElementById('test').innerHTML = '<p>Capturing...</p>';
+
+            fetch('/start_capture?color=' + color)
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('test').innerHTML =
+                            '<img id="video-feed" src="/video_feed/' + color + '">';
+                    } else {
+                        console.error('Error starting capture');
+                    }
+                })
+                .catch(error => console.error('Fetch error:', error));
+        }
+
+        function stopCapture() {
+            fetch('/stop_capture')
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('test').innerHTML = '<p>Capture Stopped</p>';
+                        document.getElementById('video-feed').remove(); 
+                    } else {
+                        console.error('Error stopping capture');
+                    }
+                })
+                .catch(error => console.error('Fetch error:', error));
+        }
+    </script>
+</body>
+
+</html>
